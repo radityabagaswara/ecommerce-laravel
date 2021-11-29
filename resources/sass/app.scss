@@ -1,1 +1,60 @@
-//
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "./global.scss";
+
+.home__section {
+    @apply my-10;
+
+    .header {
+        @apply border-b border-gray-200;
+        @apply mb-5;
+    }
+    @apply pt-3 border-b border-gray-200;
+}
+
+.home__product_warpper {
+    @apply flex flex-row flex-wrap justify-center md:justify-start gap-5;
+    .item {
+        @apply relative;
+        @apply flex flex-col w-64 h-80;
+        img {
+            @apply w-full h-48 object-contain;
+        }
+        h6 {
+            @apply w-full overflow-ellipsis line-clamp-1 text-base font-normal;
+        }
+        .percentage {
+            @apply absolute px-2 bg-red-500 text-white rounded-sm left-0 top-0;
+        }
+        small {
+            &.disc {
+                @apply text-gray-600 line-through;
+            }
+        }
+        p {
+            @apply text-indigo-700 font-bold;
+        }
+    }
+}
+
+.home__banner {
+    @apply w-full;
+    img {
+        @apply w-full;
+        @apply h-auto;
+    }
+}
+
+.home__category {
+    @apply flex flex-row flex-wrap gap-x-10 mt-5;
+    @apply gap-y-5;
+    .item {
+        @apply flex flex-col items-center w-24;
+        img {
+            @apply w-full;
+            @apply h-14;
+            @apply object-contain;
+        }
+    }
+}
