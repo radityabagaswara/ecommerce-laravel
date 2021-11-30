@@ -1,8 +1,10 @@
 @extends('layouts.user')
 
 @section('title')
-    BukaLaptop.com - Semua Permasalahan Laptop Mu!
+    BukaLaptop.com - All Your Laptop Problem!
 @endsection
+
+{{-- {{ dd($brands) }} --}}
 
 @section('content')
     <div class="md:container md:px-4 md:mx-auto home__banner">
@@ -10,24 +12,24 @@
     </div>
     <div class="container px-4 mx-auto">
 
+        {{-- Search --}}
+        <div class="flex flex-row mt-5 gap-x-5 justify-around items-center">
+            <input type="text" class="form-input rounded-3xl w-11/12" placeholder="Search Products">
+            <a class="btn btn-primary">Search</a>
+        </div>
+
         {{-- Brand Categories --}}
         <div class="home__category">
             <div class="item">
                 <img src="https://static.bmdstatic.com/cs/assets/img/category-more.svg">
                 <small>All Brands</small>
             </div>
-            <div class="item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/AsusTek-black-logo.png">
-                <small>Asus</small>
-            </div>
-            <div class="item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/AsusTek-black-logo.png">
-                <small>Asus</small>
-            </div>
-            <div class="item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/AsusTek-black-logo.png">
-                <small>Asus</small>
-            </div>
+            @foreach ($brands as $brand)
+                <div class="item">
+                    <img src="{{ $brand->image ?? 'https://static.bmdstatic.com/cs/assets/img/category-more.svg' }}">
+                    <small>{{ $brand->name }}</small>
+                </div>
+            @endforeach
         </div>
 
         {{-- For You --}}
@@ -36,42 +38,36 @@
                 <h5>Made For You!</h5>
             </div>
             <div class="home__product_warpper">
-                <div class="item">
-                    <div class="percentage">
-                        <small>3%</small>
+
+                @foreach ($products as $product)
+                    <div class="item">
+                        @if ($product->discount > 0)
+                            <div class="percentage">
+                                <small>{{ $product->discount }}%</small>
+                            </div>
+                        @endif
+                        <img src="{{ $product->image }}">
+                        <h6>{{ $product->name }}</h6>
+                        @if ($product->discount > 0)
+                            <small class="disc">Rp. {{ number_format($product->price) }}</small>
+                            @guest
+                                <p>Rp {{ $product->formated_total }}</p>
+                            @else
+                                <p>Rp {{ $product->format_total }}</p>
+                            @endguest
+                        @else
+                            <small>&nbsp;</small>
+                            @guest
+                                <p>Rp {{ $product->formated_total }}</p>
+                            @else
+                                <p>Rp {{ $product->format_total }}</p>
+                            @endguest
+
+                        @endif
+
                     </div>
-                    <img src="https://static.bmdstatic.com/pk/product/thumbnail/619b4d80ab755.jpg">
-                    <h6>MSI Katana GF76 11UC [9S7-17L212-256]</h6>
-                    <small>Rp 30.000.000</small>
-                    <p>Rp 24.000.000</p>
-                </div>
-                <div class="item">
-                    <div class="percentage">
-                        <small>3%</small>
-                    </div>
-                    <img src="https://static.bmdstatic.com/pk/product/thumbnail/619b4d80ab755.jpg">
-                    <h6>MSI Katana GF76 11UC [9S7-17L212-256]</h6>
-                    <small class="disc">Rp 30.000.000</small>
-                    <p>Rp 24.000.000</p>
-                </div>
-                <div class="item">
-                    <div class="percentage">
-                        <small>3%</small>
-                    </div>
-                    <img src="https://static.bmdstatic.com/pk/product/thumbnail/619b4d80ab755.jpg">
-                    <h6>MSI Katana GF76 11UC [9S7-17L212-256]</h6>
-                    <small>Rp 30.000.000</small>
-                    <p>Rp 24.000.000</p>
-                </div>
-                <div class="item">
-                    <div class="percentage">
-                        <small>3%</small>
-                    </div>
-                    <img src="https://static.bmdstatic.com/pk/product/thumbnail/619b4d80ab755.jpg">
-                    <h6>MSI Katana GF76 11UC [9S7-17L212-256]</h6>
-                    <small>Rp 30.000.000</small>
-                    <p>Rp 24.000.000</p>
-                </div>
+
+                @endforeach
             </div>
         </div>
 
@@ -81,18 +77,13 @@
                 <img src="https://static.bmdstatic.com/cs/assets/img/category-more.svg">
                 <small>All Categories</small>
             </div>
-            <div class="item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/AsusTek-black-logo.png">
-                <small>Asus</small>
-            </div>
-            <div class="item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/AsusTek-black-logo.png">
-                <small>Asus</small>
-            </div>
-            <div class="item">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/AsusTek-black-logo.png">
-                <small>Asus</small>
-            </div>
+
+            @foreach ($categories as $category)
+                <div class="item">
+                    <img src="{{ $category->image ?? 'https://static.bmdstatic.com/cs/assets/img/category-more.svg' }}">
+                    <small>{{ $category->name }}</small>
+                </div>
+            @endforeach
         </div>
 
         {{-- For You --}}
@@ -101,42 +92,35 @@
                 <h5>New On Display!</h5>
             </div>
             <div class="home__product_warpper">
-                <div class="item">
-                    <div class="percentage">
-                        <small>3%</small>
+                @foreach ($products as $product)
+                    <div class="item">
+                        @if ($product->discount > 0)
+                            <div class="percentage">
+                                <small>{{ $product->discount }}%</small>
+                            </div>
+                        @endif
+                        <img src="{{ $product->image }}">
+                        <h6>{{ $product->name }}</h6>
+                        @if ($product->discount > 0)
+                            <small class="disc">Rp. {{ number_format($product->price) }}</small>
+                            @guest
+                                <p>Rp {{ $product->formated_total }}</p>
+                            @else
+                                <p>Rp {{ $product->format_total }}</p>
+                            @endguest
+                        @else
+                            <small>&nbsp;</small>
+                            @guest
+                                <p>Rp {{ $product->formated_total }}</p>
+                            @else
+                                <p>Rp {{ $product->format_total }}</p>
+                            @endguest
+
+                        @endif
+
                     </div>
-                    <img src="https://static.bmdstatic.com/pk/product/thumbnail/619b4d80ab755.jpg">
-                    <h6>MSI Katana GF76 11UC [9S7-17L212-256]</h6>
-                    <small>Rp 30.000.000</small>
-                    <p>Rp 24.000.000</p>
-                </div>
-                <div class="item">
-                    <div class="percentage">
-                        <small>3%</small>
-                    </div>
-                    <img src="https://static.bmdstatic.com/pk/product/thumbnail/619b4d80ab755.jpg">
-                    <h6>MSI Katana GF76 11UC [9S7-17L212-256]</h6>
-                    <small class="disc">Rp 30.000.000</small>
-                    <p>Rp 24.000.000</p>
-                </div>
-                <div class="item">
-                    <div class="percentage">
-                        <small>3%</small>
-                    </div>
-                    <img src="https://static.bmdstatic.com/pk/product/thumbnail/619b4d80ab755.jpg">
-                    <h6>MSI Katana GF76 11UC [9S7-17L212-256]</h6>
-                    <small>Rp 30.000.000</small>
-                    <p>Rp 24.000.000</p>
-                </div>
-                <div class="item">
-                    <div class="percentage">
-                        <small>3%</small>
-                    </div>
-                    <img src="https://static.bmdstatic.com/pk/product/thumbnail/619b4d80ab755.jpg">
-                    <h6>MSI Katana GF76 11UC [9S7-17L212-256]</h6>
-                    <small>Rp 30.000.000</small>
-                    <p>Rp 24.000.000</p>
-                </div>
+
+                @endforeach
             </div>
         </div>
     </div>

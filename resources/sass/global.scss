@@ -32,11 +32,20 @@ h6 {
     @apply text-lg;
 }
 
+.text-primary {
+    @apply text-indigo-500;
+}
+
 a {
     @apply text-indigo-800;
     @apply text-base;
-    &.nocolor{
+    &.nocolor {
         @apply text-gray-900;
+    }
+    &.nohover {
+        &:hover {
+            @apply text-gray-900;
+        }
     }
 
     @apply no-underline;
@@ -63,6 +72,7 @@ a:not([href]):not([class]):hover {
     @apply px-6;
     @apply transition-all;
     @apply ease-in-out;
+    @apply text-center;
 
     &.btn-big {
         @apply p-4;
@@ -112,5 +122,15 @@ a:not([href]):not([class]):hover {
 
         @apply bg-indigo-600;
         @apply cursor-pointer;
+    }
+}
+input {
+    @apply rounded-md;
+}
+
+.form-input {
+    @apply border-indigo-200;
+    &:focus {
+        @apply border-indigo-400;
     }
 }
