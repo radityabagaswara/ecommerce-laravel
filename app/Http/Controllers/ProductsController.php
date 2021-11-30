@@ -17,6 +17,34 @@ class ProductsController extends Controller
         //
     }
 
+    public function detail($slug)
+    {
+        $product = Products::where('name', $slug)->first();
+
+        if ($product->discount > 0)
+            $product['total'] = $product->price - $product->price * ($product->discount / 100);
+        else $product['total'] = $product->price;
+
+        $product['format_total'] = number_format($product->total);
+
+        $explode_total = explode(",", $product->format_total);
+
+        $format_x = "";
+
+        $format_x .= $explode_total[0];
+
+        for ($i = 1; $i < count($explode_total); $i++) {
+            $format_x .= "," . "xxx";
+        }
+        $product["formated_total"] = $format_x;
+
+
+        $product_category = $product->categories;
+        $product_brand = $product->brands;
+
+        return view("products.detail", compact('product', 'product_brand', 'product_category'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

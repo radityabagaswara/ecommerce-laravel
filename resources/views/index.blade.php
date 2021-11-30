@@ -25,10 +25,14 @@
                 <small>All Brands</small>
             </div>
             @foreach ($brands as $brand)
-                <div class="item">
-                    <img src="{{ $brand->image ?? 'https://static.bmdstatic.com/cs/assets/img/category-more.svg' }}">
-                    <small>{{ $brand->name }}</small>
-                </div>
+                <a>
+
+                    <div class="item">
+                        <img src="{{ $brand->image ?? 'https://static.bmdstatic.com/cs/assets/img/category-more.svg' }}">
+                        <small>{{ $brand->name }}</small>
+                    </div>
+                    <a>
+
             @endforeach
         </div>
 
@@ -40,33 +44,34 @@
             <div class="home__product_warpper">
 
                 @foreach ($products as $product)
-                    <div class="item">
-                        @if ($product->discount > 0)
-                            <div class="percentage">
-                                <small>{{ $product->discount }}%</small>
-                            </div>
-                        @endif
-                        <img src="{{ $product->image }}">
-                        <h6>{{ $product->name }}</h6>
-                        @if ($product->discount > 0)
-                            <small class="disc">Rp. {{ number_format($product->price) }}</small>
-                            @guest
-                                <p>Rp {{ $product->formated_total }}</p>
+                    <a href="{{ url('products/' . $product->name) }}">
+                        <div class="item">
+                            @if ($product->discount > 0)
+                                <div class="percentage">
+                                    <small>{{ $product->discount }}%</small>
+                                </div>
+                            @endif
+                            <img src="{{ $product->image }}">
+                            <h6>{{ $product->name }}</h6>
+                            @if ($product->discount > 0)
+                                <small class="disc">Rp. {{ number_format($product->price) }}</small>
+                                @guest
+                                    <p>Rp {{ $product->formated_total }}</p>
+                                @else
+                                    <p>Rp {{ $product->format_total }}</p>
+                                @endguest
                             @else
-                                <p>Rp {{ $product->format_total }}</p>
-                            @endguest
-                        @else
-                            <small>&nbsp;</small>
-                            @guest
-                                <p>Rp {{ $product->formated_total }}</p>
-                            @else
-                                <p>Rp {{ $product->format_total }}</p>
-                            @endguest
+                                <small>&nbsp;</small>
+                                @guest
+                                    <p>Rp {{ $product->formated_total }}</p>
+                                @else
+                                    <p>Rp {{ $product->format_total }}</p>
+                                @endguest
 
-                        @endif
+                            @endif
 
-                    </div>
-
+                        </div>
+                    </a>
                 @endforeach
             </div>
         </div>
@@ -79,10 +84,15 @@
             </div>
 
             @foreach ($categories as $category)
-                <div class="item">
-                    <img src="{{ $category->image ?? 'https://static.bmdstatic.com/cs/assets/img/category-more.svg' }}">
-                    <small>{{ $category->name }}</small>
-                </div>
+                <a>
+
+                    <div class="item">
+                        <img
+                            src="{{ $category->image ?? 'https://static.bmdstatic.com/cs/assets/img/category-more.svg' }}">
+                        <small>{{ $category->name }}</small>
+                    </div>
+                </a>
+
             @endforeach
         </div>
 
@@ -93,32 +103,35 @@
             </div>
             <div class="home__product_warpper">
                 @foreach ($products as $product)
-                    <div class="item">
-                        @if ($product->discount > 0)
-                            <div class="percentage">
-                                <small>{{ $product->discount }}%</small>
-                            </div>
-                        @endif
-                        <img src="{{ $product->image }}">
-                        <h6>{{ $product->name }}</h6>
-                        @if ($product->discount > 0)
-                            <small class="disc">Rp. {{ number_format($product->price) }}</small>
-                            @guest
-                                <p>Rp {{ $product->formated_total }}</p>
-                            @else
-                                <p>Rp {{ $product->format_total }}</p>
-                            @endguest
-                        @else
-                            <small>&nbsp;</small>
-                            @guest
-                                <p>Rp {{ $product->formated_total }}</p>
-                            @else
-                                <p>Rp {{ $product->format_total }}</p>
-                            @endguest
+                    <a>
 
-                        @endif
+                        <div class="item">
+                            @if ($product->discount > 0)
+                                <div class="percentage">
+                                    <small>{{ $product->discount }}%</small>
+                                </div>
+                            @endif
+                            <img src="{{ $product->image }}">
+                            <h6>{{ $product->name }}</h6>
+                            @if ($product->discount > 0)
+                                <small class="disc">Rp. {{ number_format($product->price) }}</small>
+                                @guest
+                                    <p>Rp {{ $product->formated_total }}</p>
+                                @else
+                                    <p>Rp {{ $product->format_total }}</p>
+                                @endguest
+                            @else
+                                <small>&nbsp;</small>
+                                @guest
+                                    <p>Rp {{ $product->formated_total }}</p>
+                                @else
+                                    <p>Rp {{ $product->format_total }}</p>
+                                @endguest
 
-                    </div>
+                            @endif
+
+                        </div>
+                    </a>
 
                 @endforeach
             </div>
