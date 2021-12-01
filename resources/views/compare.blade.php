@@ -33,7 +33,8 @@
     </div>
 
 
-    <div class="fixed top-0 left-0 bg-white w-screen h-screen z-50 mt-28 border hidden" id="select_product">
+    <div class="fixed top-0 left-0 bg-white w-screen h-screen z-50 mt-28 border transition-all duration-500"
+        id="select_product" style="transform: translateY(2500px)">
         <div class="container px-4 mx-auto py-10">
             <div class="topbar flex flex-row justify-between border-b pb-5">
                 <h6>Select Product</h6>
@@ -56,17 +57,25 @@
 @section('script')
     <script>
         let currentType = 1;
+        searchData = [];
+        let data1 = null;
+        let data2 = null;
 
         function selectProduct(type) {
             event.preventDefault();
             currentType = type;
-            $('#select_product').removeClass("hidden")
+            // $('#select_product').removeClass("hidden")
+            $('#select_product').css({
+                "transform": "translateY(0)"
+            })
+
+            $('#search_list').html(' ');
+
+            $('#search_input').val("");
+
         }
 
 
-        searchData = [];
-        let data1 = null;
-        let data2 = null;
 
         function updateProduct() {
             console.log(data1.image);
@@ -86,8 +95,9 @@
 
         function closeSel(event) {
             event.preventDefault();
-            $('#select_product').addClass("hidden")
-
+            $('#select_product').css({
+                "transform": "translateY(2500px)"
+            })
         }
 
         function selData(index) {
@@ -96,7 +106,9 @@
             else
                 data2 = searchData[index];
 
-            $('#select_product').addClass("hidden")
+            $('#select_product').css({
+                "transform": "translateY(2500px)"
+            })
             updateProduct();
 
         }
