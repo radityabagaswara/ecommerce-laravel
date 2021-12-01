@@ -20,6 +20,7 @@ class ProductsController extends Controller
     public function detail($slug)
     {
         $product = Products::where('name', $slug)->first();
+        $recomended = Products::all();
 
         if ($product->discount > 0)
             $product['total'] = $product->price - $product->price * ($product->discount / 100);

@@ -22,3 +22,10 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get("products/{slug}", 'ProductsController@detail');
+
+Route::get("compare", 'CompareController@index');
+
+
+
+//API
+Route::post("api/products/search", 'SearchController@searchProduct')->name('api.products.search');

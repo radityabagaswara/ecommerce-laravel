@@ -74,6 +74,8 @@
             $('#listnav').toggleClass('hidden');
         })
     </script>
+
+    @yield('script')
 </body>
 
 </html>

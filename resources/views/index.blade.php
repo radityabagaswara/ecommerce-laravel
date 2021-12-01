@@ -12,11 +12,6 @@
     </div>
     <div class="container px-4 mx-auto">
 
-        {{-- Search --}}
-        <div class="flex flex-row mt-5 gap-x-5 justify-around items-center">
-            <input type="text" class="form-input rounded-3xl w-11/12" placeholder="Search Products">
-            <a class="btn btn-primary">Search</a>
-        </div>
 
         {{-- Brand Categories --}}
         <div class="home__category">
@@ -36,6 +31,16 @@
             @endforeach
         </div>
 
+        {{-- Search --}}
+        <div class="flex flex-row mt-5 gap-x-5 justify-around items-center relative">
+            <input type="text" class="form-input rounded w-full" placeholder="Search Products" id="search_input">
+            <div class="absolute top-12 left-0 z-40 w-full p-4 border border-gray-200 bg-white rounded hidden"
+                id="search_container">
+                <p id="search_loader">Loading</p>
+                <ul id="search_list">
+                </ul>
+            </div>
+        </div>
         {{-- For You --}}
         <div class="home__section">
             <div class="header">
@@ -137,5 +142,64 @@
             </div>
         </div>
     </div>
+@endsection
 
+@section('script')
+    <script>
+        $("#search_input").on('input', function(event) {
+            event.preventDefault();
+            const searchTerms = $("#search_input").val();
+
+            if (searchTerms.length < 3) return $("#search_container").addClass("hidden")
+            $("#search_container").removeClass("hidden")
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ route('api.products.search') }}',
+                data: {
+                    '_token': '<?php echo csrf_token(); ?>',
+                    query: searchTerms
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    $('#search_loader').html("Loading...")
+                },
+                success: function(res) {
+                    $('#search_list').html(' ');
+
+                    if (res.data.products.length < 1)
+                        $('#search_loader').html("0 Result(s) Found!")
+                    else
+                        $('#search_loader').html(`Showing ${res.data.products.length} Result(s)`)
+
+                    res.data.products.forEach(e => {
+                        $('#search_list').append(`
+                            <li class="py-2 border-b border-gray-200">
+                                <a href="{{ url('products/` + e.name + `') }}">
+                                    <div class="grid grid-cols-12">
+                                        <div class="col-span-12 md:col-span-1 max-h-12">
+                                            <img class="md:w-full h-full object-contain"
+                                                src="${e.image}">
+                                        </div>
+                                        <div class="col-span-12 md:col-span-9">
+                                            <h6 class="text-sm">${e.name}</h6>
+                                            <p><small>${e.brands.name} | ${e.categories.name}</small></p>
+
+                                        </div>
+                                        <div class="col-span-12 md:col-span-2">
+                                            ${e.discount > 0 ? `<p class="text-sm"><span class="line-through">Rp ${e.sub_total}</span> <span class="text-red-500">-${e.discount}%</span></p>` : ``}
+                                            <p class="text-sm text-indigo-500 font-semibold">Rp ${e.format_total}</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        `)
+                    })
+
+                }
+            })
+
+
+        })
+    </script>
 @endsection
