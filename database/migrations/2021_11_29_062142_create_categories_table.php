@@ -17,7 +17,6 @@ class CreateCategoriesTable extends Migration
             $table->charset = 'utf8mb4';
             $table->id();
             $table->string('name');
-            $table->string("image");
             $table->timestamps();
         });
     }

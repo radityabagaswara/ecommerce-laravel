@@ -134,3 +134,45 @@ input {
         @apply border-indigo-400;
     }
 }
+
+.admin {
+    @apply bg-gray-50;
+    .sidebar {
+        @apply z-40;
+        transform: translateX(0);
+        @apply transition-all;
+        &.hide {
+            transform: translateX(-2560px);
+        }
+    }
+
+    .content {
+        @apply md:ml-64;
+        &.hide {
+            @apply ml-0;
+        }
+    }
+}
+
+.card {
+    @apply border;
+    @apply border-gray-200;
+    @apply min-w-full;
+    @apply rounded;
+
+    .card-header {
+        @apply bg-gray-100;
+        @apply p-3;
+    }
+
+    .card-body {
+        @apply p-5;
+        @apply bg-white;
+    }
+}
+
+.form-group {
+    @apply flex;
+    @apply flex-col;
+    @apply my-3;
+}

@@ -26,6 +26,10 @@ Route::get("products/{slug}", 'ProductsController@detail');
 Route::get("compare", 'CompareController@index');
 
 
+//Categories
+Route::get("admin/categories/create", 'CategoriesController@create');
+
+
 
 //API
 Route::post("api/products/search", 'SearchController@searchProduct')->name('api.products.search');

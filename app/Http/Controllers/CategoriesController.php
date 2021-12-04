@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categories;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CategoriesController extends Controller
 {
@@ -24,7 +27,11 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        //
+        if (Gate::allows('isAdmin')) {
+            return view('admin.categories.create');
+        } else {
+            return abort(403);
+        }
     }
 
     /**
