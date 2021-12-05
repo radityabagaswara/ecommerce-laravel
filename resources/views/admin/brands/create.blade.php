@@ -2,7 +2,7 @@
 
 
 @section('title')
-    Create Categories - BukaLaptop.com
+    Create Brands - BukaLaptop.com
 @endsection
 
 @section('content')
@@ -18,13 +18,13 @@
         <div class="card">
 
             <div class="card-header">
-                <h6>Add Category</h6>
+                <h6>Add Brand</h6>
             </div>
             <div class="card-body">
-                <form enctype="multipart/form-data" method="POST" action="{{ route('categories.store') }}">
+                <form enctype="multipart/form-data" method="POST" action="{{ route('brands.store') }}">
                     @csrf
                     <div class="form-group">
-                        <label>Category Name</label>
+                        <label>Brand Name</label>
                         <input class="form-input" type="text" name='name' required>
                     </div>
 

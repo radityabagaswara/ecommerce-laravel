@@ -9,7 +9,7 @@
 
         <div class="grid grid-cols-12 md:gap-x-5">
             <div class="col-span-12 md:col-span-5 my-3 md:my-0 border border-gray-200 p-5">
-                <img class="w-full max-h-96 object-contain" src="{{ $product->image }}">
+                <img class="w-full max-h-96 object-contain" src="{{ asset('/images/products/' . $product->image) }}">
             </div>
 
             <div class="col-span-12 md:col-span-7 my-3 md:my-0">

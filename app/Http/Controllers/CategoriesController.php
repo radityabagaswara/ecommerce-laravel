@@ -17,7 +17,9 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
+        $data = Categories::All();
+
+        return view('admin.categories.index', compact('data'));
     }
 
     /**
@@ -34,6 +36,22 @@ class CategoriesController extends Controller
         }
     }
 
+    public function adminIndex()
+    {
+        if (Gate::allows('isAdmin')) {
+            $categories_raw = Categories::all();
+            $categories = [];
+
+            foreach ($categories_raw as $category) {
+                $category['total_product'] = $category->products->count();
+                $categories[] = $category;
+            }
+            return view('admin.categories.index', compact('categories'));
+        } else {
+            return abort(403);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -42,7 +60,21 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = new Categories();
+
+        $file = $request->file('image');
+
+        $imgFolder = public_path('images/categories');
+        $imgFile = $request->get('name') . '_' . time() . "." .
+            $file->getClientOriginalExtension();
+        $file->move($imgFolder, $imgFile);
+
+        $data->image = $imgFile;
+        $data->name = $request->get('name');
+
+        $data->save();
+
+        return redirect()->route('categories.create')->with('status', 'Success');
     }
 
     /**
@@ -64,7 +96,8 @@ class CategoriesController extends Controller
      */
     public function edit(Categories $categories)
     {
-        //
+        $data = $categories;
+        return view('admin.categories.edit', compact("data"));
     }
 
     /**
@@ -76,7 +109,19 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, Categories $categories)
     {
-        //
+        if ($request->image) {
+            $file = $request->file('image');
+
+            $imgFolder = public_path('images/categories');
+            $imgFile = $request->get('name') . '_' . time() . "." .
+                $file->getClientOriginalExtension();
+            $file->move($imgFolder, $imgFile);
+            $categories->image = $imgFile;
+        }
+
+        $categories->name = $request->get('name');
+        $categories->save();
+        return redirect()->route('categories.admin')->with('status', 'Data Saved!');
     }
 
     /**
@@ -87,6 +132,23 @@ class CategoriesController extends Controller
      */
     public function destroy(Categories $categories)
     {
-        //
+
+        if (!Gate::allows('isAdmin')) {
+            return abort(403);
+        }
+        try {
+            $categories->delete();
+            return response()->json(["status" => "success"]);
+        } catch (\PDOException $e) {
+            $this->handleAllRemoveChild($categories);
+            return response()->json(["status" => "success"]);
+        }
+    }
+
+    public function handleAllRemoveChild($s)
+    {
+        $s->products()->delete();
+        $s->delete();
+        return "Deleted!";
     }
 }

@@ -113,7 +113,6 @@
 
         }
 
-
         $("#search_input").on('input', function(event) {
             const searchTerms = $("#search_input").val();
 
@@ -162,11 +161,8 @@
                             </li>
                         `)
                     })
-
                 }
             })
-
-
         })
     </script>
 @endsection

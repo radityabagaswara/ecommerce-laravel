@@ -2,11 +2,19 @@
 
 
 @section('title')
-    Admin Categories - BukaLaptop.com
+    Admin Brands - BukaLaptop.com
 @endsection
 
 @section('content')
     <div class="px-3">
+        @if (session('status'))
+            <div class="p-2 m-2 bg-green-500 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex"
+                role="alert">
+                <span class="flex rounded-full bg-gray-600 uppercase px-2 py-1 text-xs font-bold mr-3">Success!</span>
+                <span class="font-semibold mr-2 text-left flex-auto">Data Successfully Saved!</span>
+
+            </div>
+        @endif
         <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -32,35 +40,34 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($categories as $category)
+                                @foreach ($brands as $brand)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $category->id }}
+                                            {{ $brand->id }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="flex items-center">
                                                 <div class="flex-shrink-0 h-10 w-10">
                                                     <img class="h-10 w-10 object-contain"
-                                                        src="{{ asset('images/categories/' . $category->image) }}" alt="">
+                                                        src="{{ asset('images/brands/' . $brand->image) }}" alt="">
                                                 </div>
                                                 <div class="ml-4">
                                                     <div class="text-sm font-medium text-gray-900">
-                                                        {{ $category->name }}
+                                                        {{ $brand->name }}
                                                     </div>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $category->total_product }}
+                                            {{ $brand->total_product }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ url('admin/categories/edit/' . $category->id) }}"
+                                            <a href="{{ url('admin/brands/edit/' . $brand->id) }}"
                                                 class="btn btn-primary mr-5">Edit</a>
 
-                                            <button onclick="delData({{ $category->id }})"
+                                            <button onclick="delData({{ $brand->id }})"
                                                 class="btn btn-danger">Delete</button>
                                         </td>
-
                                     </tr>
                                 @endforeach
 
@@ -76,15 +83,14 @@
 @endsection
 
 @section('script')
-
     <script>
         function delData(id) {
             Swal.fire({
                 icon: "warning",
                 title: "Are you Sure?",
-                text: "Deleting this category will delete all the products in it!",
+                text: "Deleting this brand will delete all the products in it!",
                 showCancelButton: true,
-                confirmButtonText: 'Delete Category and Products',
+                confirmButtonText: 'Delete Brand and Products',
                 cancelButtonText: 'Cancel',
             }).then(res => {
                 if (res.isConfirmed) {
@@ -93,7 +99,7 @@
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        url: `{{ url('admin/categories/delete/${id}') }}`,
+                        url: `{{ url('admin/brands/delete/${id}') }}`,
                         success: function(res) {
                             if (res.status === "success") {
                                 Swal.fire({
@@ -114,5 +120,4 @@
             })
         }
     </script>
-
 @endsection

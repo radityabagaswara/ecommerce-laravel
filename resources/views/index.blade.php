@@ -20,10 +20,11 @@
                 <small>All Brands</small>
             </div>
             @foreach ($brands as $brand)
-                <a>
+                <a href="{{ route('home.brands', $brand->name) }}">
 
                     <div class="item">
-                        <img src="{{ $brand->image ?? 'https://static.bmdstatic.com/cs/assets/img/category-more.svg' }}">
+                        <img
+                            src="{{ asset('/images/brands/' . $brand->image) ?? 'https://static.bmdstatic.com/cs/assets/img/category-more.svg' }}">
                         <small>{{ $brand->name }}</small>
                     </div>
                     <a>
@@ -56,7 +57,7 @@
                                     <small>{{ $product->discount }}%</small>
                                 </div>
                             @endif
-                            <img src="{{ $product->image }}">
+                            <img src="{{ asset('/images/products/' . $product->image) }}">
                             <h6>{{ $product->name }}</h6>
                             @if ($product->discount > 0)
                                 <small class="disc">Rp. {{ number_format($product->price) }}</small>
@@ -89,11 +90,11 @@
             </div>
 
             @foreach ($categories as $category)
-                <a>
+                <a href="{{ route('home.categories', $category->name) }}">
 
                     <div class="item">
                         <img
-                            src="{{ $category->image ?? 'https://static.bmdstatic.com/cs/assets/img/category-more.svg' }}">
+                            src="{{ asset('/images/categories/' . $category->image) ?? 'https://static.bmdstatic.com/cs/assets/img/category-more.svg' }}">
                         <small>{{ $category->name }}</small>
                     </div>
                 </a>
@@ -116,7 +117,7 @@
                                     <small>{{ $product->discount }}%</small>
                                 </div>
                             @endif
-                            <img src="{{ $product->image }}">
+                            <img src="{{ asset('/images/products/' . $product->image) }}">
                             <h6>{{ $product->name }}</h6>
                             @if ($product->discount > 0)
                                 <small class="disc">Rp. {{ number_format($product->price) }}</small>

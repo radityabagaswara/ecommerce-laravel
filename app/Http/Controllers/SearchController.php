@@ -10,10 +10,12 @@ class SearchController extends Controller
 {
     public function searchProduct(Request $req)
     {
-        // dd($req->get("query"));
         $products = Products::where('name', 'like', '%' . $req->get("query") . '%')->get()->take(5);
 
         foreach ($products as $product) {
+
+            $product['image'] = asset('images/products/' . $product['image']);
+
             if ($product->discount > 0)
                 $product['total'] = $product->price - $product->price * ($product->discount / 100);
             else $product['total'] = $product->price;

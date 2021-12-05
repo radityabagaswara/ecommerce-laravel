@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -46,24 +47,25 @@
             <ul class="my-3">
                 <li>
                     <i class="fas fa-home text-blue-400 mr-3"></i>
-                    <a href="/">Categories</a>
+                    <a href="{{ url('admin/categories') }}">Categories</a>
                 </li>
             </ul>
             <ul class="my-3">
                 <li>
                     <i class="fas fa-home text-blue-400 mr-3"></i>
-                    <a href="/">Products</a>
+                    <a href="{{ url('admin/products') }}">Products</a>
                 </li>
             </ul>
         </div>
     </div>
 
-    <div class="pt-24 content z-30 min-w-full" id="content">
+    <div class="pt-24 content z-30 " id="content">
 
         @yield('content')
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $("#brg").on('click', function() {

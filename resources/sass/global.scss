@@ -95,6 +95,20 @@ a:not([href]):not([class]):hover {
     }
 }
 
+.btn-danger {
+    @apply bg-red-500;
+    @apply p-3;
+    @apply px-6;
+    @apply text-white;
+
+    &:hover {
+        @apply text-white;
+
+        @apply bg-red-600;
+        @apply cursor-pointer;
+    }
+}
+
 .btn-primary {
     @apply bg-indigo-500;
     @apply p-3;
