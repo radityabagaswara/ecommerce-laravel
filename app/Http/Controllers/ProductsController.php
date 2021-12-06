@@ -185,4 +185,44 @@ class ProductsController extends Controller
         $products->delete();
         return response()->json(["status" => "success"]);
     }
+
+
+    public function addToCart(Request $request)
+    {
+        $id = $request->get('product_id');
+        $qty = (int)$request->get('qty');
+        $product = Products::find($id);
+        $cart = session()->get('cart');
+
+        if ($qty <= 0)
+            unset($cart[$id]);
+        else
+            $cart[$id] = [
+                "id" => $product->id,
+                "name" => $product->name,
+                "qty" => $qty,
+                "price" => $product->price,
+                "total" => (int) ($product['price'] - ($product['discount'] / 100 * $product['price'])) * $qty,
+                "disc" => $product->discount,
+                "image" => $product->image
+            ];
+
+
+        session()->put('cart', $cart);
+
+        return redirect()->back()->with('status', 'Product has been added to cart');
+    }
+
+    public function deleteCart(Request $request)
+    {
+        $id = $request->get('product_id');
+        $cart = session()->get('cart');
+
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+        }
+        session()->put('cart', $cart);
+
+        return redirect()->back()->with('status', 'Product has been removed from cart');
+    }
 }

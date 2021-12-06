@@ -20,8 +20,6 @@
             <div class="w-1/2 md:w-1/6">
                 <div class="flex">
                     <a href={{ url('/') }} class="nocolor nohover">
-                        {{-- <img src="https://static.bmdstatic.com/sf/assets/img/bhinneka-logo.svg" alt="Logo"
-                            class="w-44"> --}}
                         <h4>BukaLaptop</h4>
                     </a>
                 </div>
@@ -33,30 +31,96 @@
                 <div class="hidden md:block absolute md:relative left-0" id="listnav">
                     <ul
                         class="flex flex-col items-start md:items-center md:flex-row gap-y-5 md:gap-y-0 p-4 md:p-0 px-6 md:px-0 mt-4 md:mt-0 w-screen md:w-full bg-white">
-                        {{-- <li class="pr-8">
-                            <a class="">
-                                Sign In
-                            </a>
-                        </li> --}}
 
                         @guest
                             <li>
-
                                 <a class="btn btn-primary " href="{{ route('login') }}">Login</a>
                             </li>
 
                         @else
-
                             <li class="px-4">
-                                <a class="nocolor">
-                                    <i class="fas fa-shopping-cart fa-lg"></i>
-                                </a>
+                                <div class="w-full">
+                                    <a class="nocolor" onclick="openCart()">
+                                        <i class="fas fa-shopping-cart fa-lg"></i>
+                                    </a>
+                                    <div class="absolute top-8 left-0 p-3 bg-white rounded border border-gray-200 hidden"
+                                        id="cart_details" style="min-width: 300px;">
+                                        <h6>Your Cart</h6>
+                                        @if (session('cart'))
+                                            <ul>
+                                                @foreach (session('cart') as $id => $details)
+                                                    <a href="{{ url('products/' . $details['name']) }}">
+                                                        <li class="py-2 border-b border-gray-200 flex flex-row gap-x-3">
+                                                            <div class="w-3/12">
+                                                                <img class="h-full object-contain"
+                                                                    src="{{ asset('images/products/' . $details['image']) }}">
+                                                            </div>
+                                                            <div>
+
+                                                                <h6 class="text-sm">{{ $details['name'] }}</h6>
+                                                                <div class="">
+                                                                    <small>Qty: {{ $details['qty'] }}</small>
+                                                                    @if ($details['disc'])
+                                                                        <p><small class="line-through ">
+                                                                                Rp
+                                                                                {{ number_format($details['price'] * $details['qty']) }}
+                                                                            </small>
+                                                                        </p>
+                                                                        <p class="text-indigo-500 font-semibold">
+                                                                            Rp
+                                                                            {{ number_format(($details['price'] - ($details['disc'] / 100) * $details['price']) * $details['qty']) }}
+                                                                        </p>
+                                                                    @else
+                                                                        <p class="text-indigo-500 font-semibold">
+                                                                            Rp
+                                                                            {{ number_format($details['price']) }}
+                                                                        </p>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </a>
+                                                @endforeach
+                                            </ul>
+                                            <div class="mt-5">
+                                                <a class="btn btn-secondary" href="{{ url('/checkout') }}">View Cart</a>
+                                            </div>
+                                        @else
+                                            <p>Cart is empty</p>
+                                        @endif
+
+                                    </div>
+                                </div>
+
                             </li>
                             <li class="px-4">
-                                <a class="nocolor">
+                                <a class="nocolor" onclick="openUser()">
                                     <i class="fas fa-user fa-xl"></i>
                                     {{ explode(' ', Auth::user()->name)[0] }}
                                 </a>
+                                <div class="absolute top-8 left-0 p-4 bg-white rounded border border-gray-200 hidden"
+                                    id="user">
+                                    <ul class="flex flex-col gap-y-1">
+                                        <a href="#">
+                                            <li class="flex flex-row gap-x-3 items-center">
+                                                <i class="fas fa-sign-out-alt"></i>
+                                                <p>Purchase History</p>
+                                            </li>
+                                        </a>
+                                        <a href="#">
+                                            <li class="flex flex-row gap-x-3 items-center">
+                                                <i class="fas fa-sign-out-alt"></i>
+                                                <a href="{{ route('logout') }}" class=""
+                                                    onclick="event.preventDefault();
+                                                                                            document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                    class="hidden">
+                                                    {{ csrf_field() }}
+                                                </form>
+                                            </li>
+                                        </a>
+                                    </ul>
+                                </div>
                             </li>
                         @endguest
                     </ul>
@@ -75,6 +139,14 @@
         $("#burger").on('click', function() {
             $('#listnav').toggleClass('hidden');
         })
+
+        function openCart() {
+            $("#cart_details").toggleClass('hidden');
+        }
+
+        function openUser() {
+            $("#user").toggleClass('hidden');
+        }
     </script>
 
     @yield('script')

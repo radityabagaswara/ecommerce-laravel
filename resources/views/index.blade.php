@@ -11,7 +11,14 @@
         <img src="https://static.bmdstatic.com/st/home/37bcf6-mb3.jpg">
     </div>
     <div class="container px-4 mx-auto">
+        @if (session('status'))
+            <div class="p-2 m-2 bg-green-500 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex"
+                role="alert">
+                <span class="flex rounded-full bg-gray-600 uppercase px-2 py-1 text-xs font-bold mr-3">Success!</span>
+                <span class="font-semibold mr-2 text-left flex-auto">{{ session('status') }}</span>
 
+            </div>
+        @endif
 
         {{-- Brand Categories --}}
         <div class="home__category">

@@ -6,7 +6,14 @@
 
 @section('content')
     <div class="container px-4 mx-auto pb-32">
+        @if (session('status'))
+            <div class="p-2 m-2 bg-green-500 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex"
+                role="alert">
+                <span class="flex rounded-full bg-gray-600 uppercase px-2 py-1 text-xs font-bold mr-3">Success!</span>
+                <span class="font-semibold mr-2 text-left flex-auto">{{ session('status') }}</span>
 
+            </div>
+        @endif
         <div class="grid grid-cols-12 md:gap-x-5">
             <div class="col-span-12 md:col-span-5 my-3 md:my-0 border border-gray-200 p-5">
                 <img class="w-full max-h-96 object-contain" src="{{ asset('/images/products/' . $product->image) }}">
@@ -193,24 +200,35 @@
 
                     </div>
                 @else
-                    <div class="flex flex-row flex-wrap justify-between gap-x-5 gap-y-5 md:gap-y-0">
-                        <div>
-                            <p class="font-semibold">Qty</p>
-
-                            <div class="flex flex-row gap-x-1">
-                                <button class="p-3 px-5 border rounded hover:bg-gray-300 transition-all" id="qty-">-</button>
-                                <button class="p-3 px-5 border rounded bg-gray-200 cursor-text" disabled id="qty">0</button>
-                                <button class="p-3 px-5 border rounded hover:bg-gray-300 transition-all" id="qty+">+</button>
-
-                            </div>
-                        </div>
-                        <div class="flex flex-row gap-x-5 items-end">
+                    <div>
+                        <form method="post" action="{{ route('cart.add') }}"
+                            class="flex flex-row flex-wrap justify-between gap-x-5 gap-y-5 md:gap-y-0">
+                            @csrf
                             <div>
-                                <p>Total</p>
-                                <h6 id="total"></h6>
+                                <p class="font-semibold">Qty</p>
+
+                                <div class="flex flex-row gap-x-1">
+                                    <button class="p-3 px-5 border rounded hover:bg-gray-300 transition-all"
+                                        id="qty-">-</button>
+                                    <input name="product_id" type="hidden" value="{{ $product->id }}" />
+                                    <input id="qty_input" name="qty" type="hidden" value="1" />
+                                    <button class="p-3 px-5 border rounded bg-gray-200 cursor-text " id="qty" disabled></button>
+                                    <button class="p-3 px-5 border rounded hover:bg-gray-300 transition-all"
+                                        id="qty+">+</button>
+                                </div>
                             </div>
-                            <button class="btn btn-primary">Add To Cart</button>
-                        </div>
+                            <div class="flex flex-row gap-x-5 items-end">
+                                <div>
+                                    <p>Total</p>
+                                    <h6 id="total"></h6>
+                                </div>
+                                @if (isset(session('cart')[$product->id]))
+                                    <button class="btn btn-primary">Update Cart</button>
+                                @else
+                                    <button class="btn btn-primary">Add to Cart</button>
+                                @endif
+                            </div>
+                        </form>
                     </div>
                 </div>
             @endguest
@@ -219,20 +237,34 @@
     @endsection
 
     @section('script')
+        @if (isset(session('cart')[$product->id]))
+            <script>
+                let qty = "{{ session('cart')[$product->id]['qty'] }}";
+            </script>
+        @else
+            <script>
+                let qty = 1;
+            </script>
+
+        @endif
+
+
         <script>
-            let qty = 0;
+            qty = parseInt(qty);
             let price = ("{{ $product->format_total }}").replace(/,/g, '')
             price = isNaN(price) ? price : parseInt(price);
             let priceAdj = price;
 
-            $("#qty").html('1');
+            $('#qty').html(qty);
+            $('#qty_input').attr("value", qty);
             $('#total').html("Rp " + priceAdj.toLocaleString());
 
             $("#qty+").on('click', function(event) {
                 event.preventDefault();
                 qty += 1;
                 priceAdj = price * qty;
-                $("#qty").html(qty);
+                $('#qty').html(qty);
+                $('#qty_input').attr("value", qty);
                 $('#total').html("Rp " + priceAdj.toLocaleString());
 
             })
@@ -245,7 +277,8 @@
 
                 priceAdj = price * qty;
 
-                $("#qty").html(qty);
+                $('#qty').html(qty);
+                $('#qty_input').attr("value", qty);
                 $('#total').html("Rp " + priceAdj.toLocaleString());
             })
         </script>

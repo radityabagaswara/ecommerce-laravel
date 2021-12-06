@@ -70,6 +70,22 @@ Route::delete("admin/products/delete/{products}", 'ProductsController@destroy')-
 Route::post('admin/products/store', 'ProductsController@store')->name('products.store');
 
 
+//Cart
+Route::post('cart/add', 'ProductsController@addToCart')->name('cart.add');
+Route::post('cart/delete', 'ProductsController@deleteCart')->name('cart.delete');
+
+//Checkout
+Route::get('checkout', 'TransactionsController@checkoutIndex')->name('checkout');
+Route::post('checkout/req', 'TransactionsController@store')->name('checkout.store');
+
+
+//Transactions
+Route::get('admin/transactions', 'TransactionsController@adminIndex')->name('transactions.admin');
+Route::get('admin/transactions/{id}', 'TransactionsController@adminDetail')->name('transactions.admin.detail');
+
+Route::post('admin/transactions.confirm', 'TransactionsController@confirmTransaction')->name('transactions.confirm');
+
+
 
 //API
 Route::post("api/products/search", 'SearchController@searchProduct')->name('api.products.search');
