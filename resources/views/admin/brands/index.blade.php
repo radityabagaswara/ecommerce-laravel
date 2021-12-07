@@ -10,11 +10,14 @@
         @if (session('status'))
             <div class="p-2 m-2 bg-green-500 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex"
                 role="alert">
-                <span class="flex rounded-full bg-gray-600 uppercase px-2 py-1 text-xs font-bold mr-3">Success!</span>
-                <span class="font-semibold mr-2 text-left flex-auto">Data Successfully Saved!</span>
+                <span class="flex rounded-full bg-gray-600 uppercase px-2 py-1 text-xs font-bold mr-3"></span>
+                <span class="font-semibold mr-2 text-left flex-auto">{{ session('status') }}</span>
 
             </div>
         @endif
+        <div class="mb-5">
+            <a href="{{ url('admin/brands/create') }}" class="btn btn-primary">Add Brands</a>
+        </div>
         <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -112,6 +115,18 @@
                                     }
                                 })
                             }
+                        },
+                        error: function(res) {
+                            console.log(res)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: JSON.parse(res.responseText).status,
+                            }).then(res => {
+                                if (res.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            })
                         }
                     })
                 } else {

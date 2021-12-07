@@ -16,7 +16,7 @@
             </div>
         @endif
         <div class="mb-5">
-            <a href="{{ url('admin/products/create') }}" class="btn btn-primary">Add Product</a>
+            <a href="{{ url('admin/staff/create') }}" class="btn btn-primary">Add Staff</a>
         </div>
         <div class="flex flex-col">
             <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -31,23 +31,11 @@
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Brand
+                                        Email
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Category
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Subtotal
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Discount
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Total
+                                        Role
                                     </th>
                                     <th scope="col" class="relative px-6 py-3">
                                         <span class="sr-only">Edit</span>
@@ -55,42 +43,22 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($products as $product)
+                                @foreach ($users as $ur)
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="flex-shrink-0 h-10 w-10">
-                                                    <img class="h-10 w-10 object-contain"
-                                                        src="{{ asset('images/products/' . $product->image) }}" alt="">
-                                                </div>
-                                                <div class="ml-4">
-                                                    <div class="text-sm font-medium text-gray-900">
-                                                        {{ $product->name }}
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            {{ $ur->name }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $product->brand->name }}
+                                            {{ $ur->email }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $product->category->name }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            Rp {{ number_format($product->price) }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $product->discount }} %
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            Rp
-                                            {{ number_format($product->price - ($product->discount / 100) * $product->price) }}
+                                            {{ $ur->role }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ url('admin/products/edit/' . $product->id) }}"
-                                                class="btn btn-primary mr-5">Edit</a>
-
-                                            <button onclick="delData({{ $product->id }})"
+                                            <button onclick="resetPwd({{ $ur->id }})"
+                                                class="btn btn-primary mr-5">Reset
+                                                Password</button>
+                                            <button onclick="delData({{ $ur->id }})"
                                                 class="btn btn-danger">Delete</button>
                                         </td>
                                     </tr>
@@ -113,7 +81,7 @@
             Swal.fire({
                 icon: "warning",
                 title: "Are you Sure?",
-                text: "Are you sure you want to delete this product?",
+                text: "Are you sure you want to delete this user?",
                 showCancelButton: true,
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
@@ -124,7 +92,7 @@
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
-                        url: `{{ url('admin/products/delete/${id}') }}`,
+                        url: `{{ url('admin/staff/delete/${id}') }}`,
                         success: function(res) {
                             if (res.status === "success") {
                                 Swal.fire({
@@ -137,6 +105,59 @@
                                     }
                                 })
                             }
+                        },
+                        error: function(res) {
+                            console.log(res)
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: JSON.parse(res.responseText).status,
+                            }).then(res => {
+                                if (res.isConfirmed) {
+                                    window.location.reload();
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    return false;
+                }
+            })
+        }
+
+        function resetPwd(id) {
+            Swal.fire({
+                icon: "warning",
+                title: "Are you Sure?",
+                text: "Are you sure you want to reset this user?",
+                showCancelButton: true,
+                confirmButtonText: 'Reset',
+                cancelButtonText: 'Cancel',
+            }).then(res => {
+                if (res.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        url: `{{ url('admin/staff/reset/${id}') }}`,
+                        success: function(res) {
+                            const temp = document.createElement("input");
+                            temp.value = res.new_pwd;
+                            document.body.appendChild(temp);
+                            temp.select();
+
+                            document.execCommand("copy");
+                            document.body.removeChild(temp);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: "Password has been coppied to your clipboard!",
+                            }).then(res => {
+                                if (res.isConfirmed) {
+
+                                }
+                            })
                         },
                         error: function(res) {
                             console.log(res)

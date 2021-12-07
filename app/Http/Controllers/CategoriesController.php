@@ -29,27 +29,19 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        if (Gate::allows('isAdmin')) {
-            return view('admin.categories.create');
-        } else {
-            return abort(403);
-        }
+        return view('admin.categories.create');
     }
 
     public function adminIndex()
     {
-        if (Gate::allows('isAdmin')) {
-            $categories_raw = Categories::all();
-            $categories = [];
+        $categories_raw = Categories::all();
+        $categories = [];
 
-            foreach ($categories_raw as $category) {
-                $category['total_product'] = $category->products->count();
-                $categories[] = $category;
-            }
-            return view('admin.categories.index', compact('categories'));
-        } else {
-            return abort(403);
+        foreach ($categories_raw as $category) {
+            $category['total_product'] = $category->products->count();
+            $categories[] = $category;
         }
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
@@ -133,22 +125,12 @@ class CategoriesController extends Controller
     public function destroy(Categories $categories)
     {
 
-        if (!Gate::allows('isAdmin')) {
-            return abort(403);
-        }
+
         try {
             $categories->delete();
             return response()->json(["status" => "success"]);
         } catch (\PDOException $e) {
-            $this->handleAllRemoveChild($categories);
-            return response()->json(["status" => "success"]);
+            return response()->json(["status" => "Category still have Products in it! Please delete those first."], 403);
         }
-    }
-
-    public function handleAllRemoveChild($s)
-    {
-        $s->products()->delete();
-        $s->delete();
-        return "Deleted!";
     }
 }

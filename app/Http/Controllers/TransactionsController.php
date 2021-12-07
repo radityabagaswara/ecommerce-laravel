@@ -16,6 +16,43 @@ class TransactionsController extends Controller
      */
     public function index()
     {
+        $id = Auth::user()->id;
+        $transactions = Transactions::where('users_id', $id)->get();
+
+        foreach ($transactions as $transaction) {
+            $total = 0;
+            $qty = 0;
+            foreach ($transaction->Products as $pr) {
+                $total += $pr->pivot->total;
+                $qty += $pr->pivot->qty;
+            }
+            $transaction['total'] = $total;
+            $transaction['qty'] = $qty;
+        }
+
+        return view('transactions.index', compact("transactions"));
+    }
+
+    public function detail($id)
+    {
+        $transactions = Transactions::find($id);
+        $id_user = Auth::user()->id;
+
+        if ($transactions->users_id !== $id_user) {
+            return abort(403);
+        }
+
+        $total = 0;
+        $qty = 0;
+        foreach ($transactions->Products as $pr) {
+            $total += $pr->pivot->total;
+            $qty += $pr->pivot->qty;
+        }
+        $transactions['total'] = $total;
+        $transactions['qty'] = $qty;
+
+
+        return view('transactions.detail', compact("transactions"));
     }
 
     public function adminIndex()

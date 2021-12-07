@@ -53,7 +53,8 @@
                         <dt class="col-span-4 font-semibold">Category</dt>
                         <dd class="col-span-8">
                             {{ $product_category->name }}
-                            <p><a href=""><small>More from this Category</small></a></p>
+                            <p><a href="{{ url('categories/' . $product_category->name) }}"><small>More from this
+                                        Category</small></a></p>
 
                         </dd>
                     </dl>
@@ -62,7 +63,8 @@
                         <dt class="col-span-4 font-semibold">Brand</dt>
                         <dd class="col-span-8">
                             {{ $product_brand->name }}
-                            <p><a href=""><small>More from this brand</small></a></p>
+                            <p><a href="{{ url('brands/' . $product_brand->name) }}"><small>More from this
+                                        brand</small></a></p>
                         </dd>
                     </dl>
 

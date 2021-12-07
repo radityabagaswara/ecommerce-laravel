@@ -11,7 +11,7 @@
             <div class="p-2 m-2 bg-green-500 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex"
                 role="alert">
                 <span class="flex rounded-full bg-gray-600 uppercase px-2 py-1 text-xs font-bold mr-3">Success!</span>
-                <span class="font-semibold mr-2 text-left flex-auto">Data Successfully Saved!</span>
+                <span class="font-semibold mr-2 text-left flex-auto">{{ session('status') }}</span>
 
             </div>
         @endif

@@ -39,9 +39,16 @@
 
                         @else
                             <li class="px-4">
+                                <a class="nocolor" href="{{ url('compare') }}">
+                                    <i class="fas fa-not-equal fa-lg"></i>
+                                    Compare
+                                </a>
+                            </li>
+                            <li class="px-4">
                                 <div class="w-full">
                                     <a class="nocolor" onclick="openCart()">
                                         <i class="fas fa-shopping-cart fa-lg"></i>
+                                        Cart
                                     </a>
                                     <div class="absolute top-8 left-0 p-3 bg-white rounded border border-gray-200 hidden"
                                         id="cart_details" style="min-width: 300px;">
@@ -91,7 +98,6 @@
 
                                     </div>
                                 </div>
-
                             </li>
                             <li class="px-4">
                                 <a class="nocolor" onclick="openUser()">
@@ -101,9 +107,9 @@
                                 <div class="absolute top-8 left-0 p-4 bg-white rounded border border-gray-200 hidden"
                                     id="user">
                                     <ul class="flex flex-col gap-y-1">
-                                        <a href="#">
+                                        <a href="{{ route('transactions.home') }}">
                                             <li class="flex flex-row gap-x-3 items-center">
-                                                <i class="fas fa-sign-out-alt"></i>
+                                                <i class="fas fa-history"></i>
                                                 <p>Purchase History</p>
                                             </li>
                                         </a>

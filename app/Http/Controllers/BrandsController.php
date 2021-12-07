@@ -22,19 +22,15 @@ class BrandsController extends Controller
 
     public function adminIndex()
     {
-        if (Gate::allows('isAdmin')) {
-            $brands_raw = Brands::all();
-            $brands = [];
+        $brands_raw = Brands::all();
+        $brands = [];
 
-            foreach ($brands_raw as $brand) {
-                $brand['total_product'] = $brand->products->count();
-                $brands[] = $brand;
-            }
-
-            return view('admin.brands.index', compact('brands'));
-        } else {
-            return abort(403);
+        foreach ($brands_raw as $brand) {
+            $brand['total_product'] = $brand->products->count();
+            $brands[] = $brand;
         }
+
+        return view('admin.brands.index', compact('brands'));
     }
 
     /**
@@ -44,11 +40,7 @@ class BrandsController extends Controller
      */
     public function create()
     {
-        if (Gate::allows('isAdmin')) {
-            return view('admin.brands.create');
-        } else {
-            return abort(403);
-        }
+        return view('admin.brands.create');
     }
 
     /**
@@ -133,22 +125,11 @@ class BrandsController extends Controller
      */
     public function destroy(Brands $brands)
     {
-        if (!Gate::allows('isAdmin')) {
-            return abort(403);
-        }
         try {
             $brands->delete();
             return response()->json(["status" => "success"]);
         } catch (\PDOException $e) {
-            $this->handleAllRemoveChild($brands);
-            return response()->json(["status" => "success"]);
+            return response()->json(["status" => "Brand still have Products in it! Please delete those first."], 403);
         }
-    }
-
-    public function handleAllRemoveChild($s)
-    {
-        $s->products()->delete();
-        $s->delete();
-        return "Deleted!";
     }
 }

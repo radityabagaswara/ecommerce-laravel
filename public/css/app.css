@@ -32451,6 +32451,21 @@ input {
      object-fit: contain;
 }
 
+.compare li {
+  display: flex;
+  height: 5rem;
+  align-items: center;
+  justify-content: center;
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: rgba(229, 231, 235, var(--tw-border-opacity));
+}
+
+.compare li.param {
+  --tw-bg-opacity: 1;
+  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+}
+
 @media (min-width: 640px) {
   .sm\:container {
     width: 100%;

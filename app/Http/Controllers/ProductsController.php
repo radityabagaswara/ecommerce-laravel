@@ -179,11 +179,13 @@ class ProductsController extends Controller
      */
     public function destroy(Products $products)
     {
-        if (!Gate::allows('isAdmin')) {
-            return abort(403);
+
+        try {
+            $products->delete();
+            return response()->json(["status" => "success"]);
+        } catch (\PDOException $e) {
+            return response()->json(["status" => "Product that already has a transaction can't be deleted!"], 403);
         }
-        $products->delete();
-        return response()->json(["status" => "success"]);
     }
 
 

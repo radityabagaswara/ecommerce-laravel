@@ -58,3 +58,13 @@
         }
     }
 }
+
+.compare {
+    li {
+        @apply flex justify-center items-center  h-20 border-b border-gray-200;
+
+        &.param {
+            @apply bg-gray-100;
+        }
+    }
+}
