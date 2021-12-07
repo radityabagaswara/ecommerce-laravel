@@ -116,7 +116,7 @@
             </div>
             <div class="home__product_warpper">
                 @foreach ($products as $product)
-                    <a>
+                    <a href="{{ url('products/' . $product->name) }}">
 
                         <div class="item">
                             @if ($product->discount > 0)

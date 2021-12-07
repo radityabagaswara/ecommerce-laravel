@@ -125,54 +125,63 @@
                                 {{ $product->model }}
                             </dd>
                         </dl>
+                        @guest
+                            <dl class="grid grid-cols-12 my-1">
+                                <dt class="col-span-4 md:col-span-2 font-semibold"></dt>
+                                <dd class="col-span-10">
+                                    <a href="{{ url('login') }}">Login to view more</a>
+                                </dd>
+                            </dl>
+                        @else
 
-                        <dl class="grid grid-cols-12 my-1">
-                            <dt class="col-span-4 md:col-span-2 font-semibold">Memory</dt>
-                            <dd class="col-span-10">
-                                {{ $product->ram }}
-                            </dd>
-                        </dl>
+                            <dl class="grid grid-cols-12 my-1">
+                                <dt class="col-span-4 md:col-span-2 font-semibold">Memory</dt>
+                                <dd class="col-span-10">
+                                    {{ $product->ram }}
+                                </dd>
+                            </dl>
 
-                        <dl class="grid grid-cols-12 my-1">
-                            <dt class="col-span-4 md:col-span-2 font-semibold">Battery</dt>
-                            <dd class="col-span-10">
-                                {{ $product->battery_capacity }}
-                            </dd>
-                        </dl>
+                            <dl class="grid grid-cols-12 my-1">
+                                <dt class="col-span-4 md:col-span-2 font-semibold">Battery</dt>
+                                <dd class="col-span-10">
+                                    {{ $product->battery_capacity }}
+                                </dd>
+                            </dl>
 
-                        <dl class="grid grid-cols-12 my-1">
-                            <dt class="col-span-4 md:col-span-2 font-semibold">Proccessor</dt>
-                            <dd class="col-span-10">
-                                {{ $product->cpu }}
-                            </dd>
-                        </dl>
+                            <dl class="grid grid-cols-12 my-1">
+                                <dt class="col-span-4 md:col-span-2 font-semibold">Proccessor</dt>
+                                <dd class="col-span-10">
+                                    {{ $product->cpu }}
+                                </dd>
+                            </dl>
 
-                        <dl class="grid grid-cols-12 my-1">
-                            <dt class="col-span-4 md:col-span-2 font-semibold">Screen Size</dt>
-                            <dd class="col-span-10">
-                                {{ $product->screen_size }} Inches
-                            </dd>
-                        </dl>
+                            <dl class="grid grid-cols-12 my-1">
+                                <dt class="col-span-4 md:col-span-2 font-semibold">Screen Size</dt>
+                                <dd class="col-span-10">
+                                    {{ $product->screen_size }} Inches
+                                </dd>
+                            </dl>
 
-                        <dl class="grid grid-cols-12 my-1">
-                            <dt class="col-span-4 md:col-span-2 font-semibold">Hard Disk</dt>
-                            <dd class="col-span-10">
-                                {{ $product->hard_disk }}
-                            </dd>
-                        </dl>
-                        <dl class="grid grid-cols-12 my-1">
-                            <dt class="col-span-4 md:col-span-2 font-semibold">Storage</dt>
-                            <dd class="col-span-10">
-                                {{ $product->hard_disk_capacity }}
-                            </dd>
-                        </dl>
+                            <dl class="grid grid-cols-12 my-1">
+                                <dt class="col-span-4 md:col-span-2 font-semibold">Hard Disk</dt>
+                                <dd class="col-span-10">
+                                    {{ $product->hard_disk }}
+                                </dd>
+                            </dl>
+                            <dl class="grid grid-cols-12 my-1">
+                                <dt class="col-span-4 md:col-span-2 font-semibold">Storage</dt>
+                                <dd class="col-span-10">
+                                    {{ $product->hard_disk_capacity }}
+                                </dd>
+                            </dl>
 
-                        <dl class="grid grid-cols-12 my-1">
-                            <dt class="col-span-4 md:col-span-2 font-semibold">Graphic</dt>
-                            <dd class="col-span-10">
-                                {{ $product->graphic_card }}
-                            </dd>
-                        </dl>
+                            <dl class="grid grid-cols-12 my-1">
+                                <dt class="col-span-4 md:col-span-2 font-semibold">Graphic</dt>
+                                <dd class="col-span-10">
+                                    {{ $product->graphic_card }}
+                                </dd>
+                            </dl>
+                        @endguest
                     </div>
                 </div>
             </div>

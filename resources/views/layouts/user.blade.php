@@ -32,18 +32,19 @@
                     <ul
                         class="flex flex-col items-start md:items-center md:flex-row gap-y-5 md:gap-y-0 p-4 md:p-0 px-6 md:px-0 mt-4 md:mt-0 w-screen md:w-full bg-white">
 
+                        <li class="px-4">
+                            <a class="nocolor" href="{{ url('compare') }}">
+                                <i class="fas fa-not-equal fa-lg"></i>
+                                Compare
+                            </a>
+                        </li>
                         @guest
                             <li>
                                 <a class="btn btn-primary " href="{{ route('login') }}">Login</a>
                             </li>
 
                         @else
-                            <li class="px-4">
-                                <a class="nocolor" href="{{ url('compare') }}">
-                                    <i class="fas fa-not-equal fa-lg"></i>
-                                    Compare
-                                </a>
-                            </li>
+
                             <li class="px-4">
                                 <div class="w-full">
                                     <a class="nocolor" onclick="openCart()">
@@ -99,7 +100,7 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="px-4">
+                            <li class="px-4 relative">
                                 <a class="nocolor" onclick="openUser()">
                                     <i class="fas fa-user fa-xl"></i>
                                     {{ explode(' ', Auth::user()->name)[0] }}
@@ -107,6 +108,14 @@
                                 <div class="absolute top-8 left-0 p-4 bg-white rounded border border-gray-200 hidden"
                                     id="user">
                                     <ul class="flex flex-col gap-y-1">
+                                        @can('isStaff')
+                                            <a href="{{ url('admin') }}">
+                                                <li class="flex flex-row gap-x-3 items-center">
+                                                    <i class="fas fa-gear"></i>
+                                                    <p>Admin Dashboard</p>
+                                                </li>
+                                            </a>
+                                        @endcan
                                         <a href="{{ route('transactions.home') }}">
                                             <li class="flex flex-row gap-x-3 items-center">
                                                 <i class="fas fa-history"></i>
@@ -118,7 +127,7 @@
                                                 <i class="fas fa-sign-out-alt"></i>
                                                 <a href="{{ route('logout') }}" class=""
                                                     onclick="event.preventDefault();
-                                                                                            document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
+                                                                                                                                                                document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
                                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                                     class="hidden">
                                                     {{ csrf_field() }}

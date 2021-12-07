@@ -91,9 +91,9 @@
             Swal.fire({
                 icon: "warning",
                 title: "Are you Sure?",
-                text: "Deleting this brand will delete all the products in it!",
+                text: "Deleted data can't be recover!",
                 showCancelButton: true,
-                confirmButtonText: 'Delete Brand and Products',
+                confirmButtonText: 'Delete Brand',
                 cancelButtonText: 'Cancel',
             }).then(res => {
                 if (res.isConfirmed) {

@@ -81,7 +81,7 @@
             Swal.fire({
                 icon: "warning",
                 title: "Are you Sure?",
-                text: "Are you sure you want to delete this user?",
+                text: "Deleted data can't be recover!",
                 showCancelButton: true,
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
